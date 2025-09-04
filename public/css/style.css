@@ -1,0 +1,378 @@
+:root {
+    --primary-green: #198754;
+    --dark-green: #0f5132;
+    --light-green: #d1e7dd;
+}
+
+body {
+    padding-top: 76px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.hero-section {
+    background: linear-gradient(135deg, #0f5132 0%, #198754 100%);
+    padding: 120px 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.05"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E') repeat;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Göz alıcı başlık stilleri */
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -1px;
+    text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.3);
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.text-gradient {
+    background: linear-gradient(90deg, #ffffff, #f0f8f4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    animation: shimmer 3s ease-in-out infinite;
+}
+
+.text-highlight {
+    color: #ffc107;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4),
+                 0 0 30px rgba(255, 193, 7, 0.5);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+.text-animate {
+    color: #ffffff;
+    position: relative;
+    display: inline-block;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.text-light-green {
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.3);
+    font-size: 1.25rem;
+}
+
+/* Animasyonlar */
+@keyframes shimmer {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes glow {
+    from {
+        filter: brightness(1);
+        transform: scale(1);
+    }
+    to {
+        filter: brightness(1.2);
+        transform: scale(1.02);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Altçizgi efekti */
+.hero-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #ffc107, transparent);
+    animation: slide 3s linear infinite;
+}
+
+@keyframes slide {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.logo-circle-hero {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #198754 0%, #0f5132 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+.logo-circle-hero::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    filter: blur(20px);
+    opacity: 0.4;
+    z-index: -1;
+}
+
+.logo-circle-hero img {
+    width: 140%;
+    height: 140%;
+    object-fit: cover;
+    object-position: center 87%;
+    position: relative;
+    z-index: 1;
+    transform: scale(1.2) translateY(58px);
+}
+
+.service-card {
+    border: none;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(25, 135, 84, 0.2);
+}
+
+.service-card .card-body {
+    padding: 2rem;
+}
+
+.service-card i {
+    transition: transform 0.3s;
+}
+
+.service-card:hover i {
+    transform: scale(1.1);
+}
+
+.login-container {
+    max-width: 400px;
+    margin: 100px auto;
+}
+
+.dashboard-sidebar {
+    min-height: calc(100vh - 76px);
+    background: #f8f9fa;
+}
+
+.appointment-card {
+    border-left: 4px solid var(--primary-green);
+}
+
+.appointment-card.pending {
+    border-left-color: #ffc107;
+}
+
+.appointment-card.confirmed {
+    border-left-color: #0dcaf0;
+}
+
+.appointment-card.completed {
+    border-left-color: #198754;
+}
+
+.appointment-card.cancelled {
+    border-left-color: #dc3545;
+}
+
+.service-badge {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.875em;
+    font-weight: 500;
+    color: white;
+    background-color: var(--primary-green);
+    border-radius: 0.375rem;
+    margin: 2px;
+}
+
+.image-preview {
+    max-width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Yeni resim yükleme kutuları */
+.image-upload-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f8f9fa;
+    transition: all 0.3s;
+}
+
+.image-upload-box:hover {
+    border-color: var(--primary-green);
+    background: #f0f8f4;
+}
+
+.image-upload-box .image-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    color: #6c757d;
+    transition: all 0.3s;
+}
+
+.image-upload-box .image-label:hover {
+    color: var(--primary-green);
+}
+
+.image-upload-box .image-label i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.image-upload-box .image-label span {
+    font-size: 0.875rem;
+}
+
+.image-upload-box.has-image .image-label {
+    display: none;
+}
+
+.image-upload-box .image-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.image-upload-box .remove-image {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    padding: 0.25rem 0.5rem;
+    opacity: 0.9;
+}
+
+.image-upload-box .remove-image:hover {
+    opacity: 1;
+}
+
+.status-badge {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 56px;
+    }
+    
+    .hero-section {
+        padding: 60px 0;
+        text-align: center;
+    }
+    
+    .hero-title {
+        font-size: 1.8rem;
+        white-space: normal;
+    }
+    
+    .hero-title span {
+        display: block;
+        margin: 5px 0;
+    }
+    
+    .text-highlight {
+        font-size: 2rem;
+    }
+    
+    .logo-circle-hero {
+        width: 150px;
+        height: 150px;
+        margin-bottom: 20px;
+    }
+    
+    .hero-section .col-lg-9 {
+        text-align: center;
+    }
+}
+
+/* Navbar improvements */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Button improvements */
+.btn {
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107, #ff9800);
+    border: none;
+    color: #000;
+    cursor: pointer !important;
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    background: linear-gradient(135deg, #ff9800, #ffc107);
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Paneli - Bahçe Zanaat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="bi bi-tree"></i> BAHÇE ZANAAT
+            </a>
+            <div class="ms-auto d-flex align-items-center">
+                <span class="text-white me-3">
+                    <i class="bi bi-person-circle"></i> <span id="userName">Kullanıcı</span>
+                </span>
+                <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Çıkış
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar dashboard-sidebar">
+                <div class="position-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-page="appointments">
+                                <i class="bi bi-calendar-check"></i> Randevularım
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="new-appointment">
+                                <i class="bi bi-plus-circle"></i> Yeni Randevu
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <!-- Appointments Page -->
+                <div id="appointmentsPage" class="page-content">
+                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Randevularım</h1>
+                        <button class="btn btn-success" onclick="showPage('new-appointment')">
+                            <i class="bi bi-plus"></i> Yeni Randevu
+                        </button>
+                    </div>
+
+                    <div id="appointmentsList" class="row g-3">
+                        <!-- Randevular buraya gelecek -->
+                    </div>
+                </div>
+
+                <!-- New Appointment Page -->
+                <div id="newAppointmentPage" class="page-content d-none">
+                    <div class="pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Yeni Randevu Oluştur</h1>
+                    </div>
+
+                    <form id="appointmentForm" class="row g-3">
+                        <div class="col-md-6">
+                            <label for="appointmentDate" class="form-label">Randevu Tarihi</label>
+                            <input type="date" class="form-control" id="appointmentDate" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="appointmentTime" class="form-label">Randevu Saati</label>
+                            <input type="time" class="form-control" id="appointmentTime" required>
+                        </div>
+                        
+                        <div class="col-12">
+                            <label class="form-label">İstediğiniz Hizmetler</label>
+                            <div class="row" id="servicesCheckboxes">
+                                <!-- Hizmetler buraya gelecek -->
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="appointmentNotes" class="form-label">Notlar / Açıklama</label>
+                            <textarea class="form-control" id="appointmentNotes" rows="3" placeholder="Bahçeniz hakkında detaylar, özel istekleriniz..."></textarea>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Bahçe Fotoğrafları (Max 5 adet)</label>
+                            <small class="text-muted d-block mb-3">Bahçenizin mevcut durumunu gösteren fotoğraflar ekleyebilirsiniz</small>
+                            <div class="row g-3" id="imageUploadBoxes">
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <div class="image-upload-box" data-index="0">
+                                        <input type="file" class="d-none image-input" id="image-0" accept="image/*">
+                                        <label for="image-0" class="image-label">
+                                            <i class="bi bi-plus-lg"></i>
+                                            <span>Fotoğraf 1</span>
+                                        </label>
+                                        <img class="image-preview d-none" alt="Preview">
+                                        <button class="btn btn-sm btn-danger remove-image d-none" type="button">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <div class="image-upload-box" data-index="1">
+                                        <input type="file" class="d-none image-input" id="image-1" accept="image/*">
+                                        <label for="image-1" class="image-label">
+                                            <i class="bi bi-plus-lg"></i>
+                                            <span>Fotoğraf 2</span>
+                                        </label>
+                                        <img class="image-preview d-none" alt="Preview">
+                                        <button class="btn btn-sm btn-danger remove-image d-none" type="button">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <div class="image-upload-box" data-index="2">
+                                        <input type="file" class="d-none image-input" id="image-2" accept="image/*">
+                                        <label for="image-2" class="image-label">
+                                            <i class="bi bi-plus-lg"></i>
+                                            <span>Fotoğraf 3</span>
+                                        </label>
+                                        <img class="image-preview d-none" alt="Preview">
+                                        <button class="btn btn-sm btn-danger remove-image d-none" type="button">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <div class="image-upload-box" data-index="3">
+                                        <input type="file" class="d-none image-input" id="image-3" accept="image/*">
+                                        <label for="image-3" class="image-label">
+                                            <i class="bi bi-plus-lg"></i>
+                                            <span>Fotoğraf 4</span>
+                                        </label>
+                                        <img class="image-preview d-none" alt="Preview">
+                                        <button class="btn btn-sm btn-danger remove-image d-none" type="button">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <div class="image-upload-box" data-index="4">
+                                        <input type="file" class="d-none image-input" id="image-4" accept="image/*">
+                                        <label for="image-4" class="image-label">
+                                            <i class="bi bi-plus-lg"></i>
+                                            <span>Fotoğraf 5</span>
+                                        </label>
+                                        <img class="image-preview d-none" alt="Preview">
+                                        <button class="btn btn-sm btn-danger remove-image d-none" type="button">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check-circle"></i> Randevu Oluştur
+                            </button>
+                            <button type="button" class="btn btn-secondary ms-2" onclick="showPage('appointments')">
+                                İptal
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" class="position-fixed top-0 start-50 translate-middle-x p-3" style="z-index: 9999; margin-top: 80px;"></div>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Fotoğraf</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="modalImage" src="" alt="Bahçe Fotoğrafı" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
