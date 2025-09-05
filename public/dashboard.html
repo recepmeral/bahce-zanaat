@@ -42,6 +42,11 @@
                                 <i class="bi bi-plus-circle"></i> Yeni Randevu
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-page="reviews">
+                                <i class="bi bi-star"></i> Yorumlarım
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -171,6 +176,56 @@
                             </button>
                         </div>
                     </form>
+                </div>
+
+                <!-- Reviews Page -->
+                <div id="reviewsPage" class="page-content d-none">
+                    <div class="pt-3 pb-2 mb-3 border-bottom">
+                        <h1 class="h2">Yorumlarım</h1>
+                    </div>
+
+                    <!-- New Review Form -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0"><i class="bi bi-chat-quote"></i> Yeni Yorum Yap</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="reviewForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Hizmet Değerlendirmesi</label>
+                                    <div class="star-rating">
+                                        <i class="bi bi-star star-btn" data-rating="1"></i>
+                                        <i class="bi bi-star star-btn" data-rating="2"></i>
+                                        <i class="bi bi-star star-btn" data-rating="3"></i>
+                                        <i class="bi bi-star star-btn" data-rating="4"></i>
+                                        <i class="bi bi-star star-btn" data-rating="5"></i>
+                                        <span class="ms-3 text-muted" id="ratingText">Değerlendirmenizi yapın</span>
+                                    </div>
+                                    <input type="hidden" id="reviewRating" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="reviewComment" class="form-label">Yorumunuz</label>
+                                    <textarea class="form-control" id="reviewComment" rows="4" 
+                                        placeholder="Aldığınız hizmet hakkındaki düşüncelerinizi paylaşın..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="bi bi-send"></i> Yorumu Gönder
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- My Reviews List -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="mb-0">Geçmiş Yorumlarım</h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="myReviewsList">
+                                <!-- Yorumlar buraya gelecek -->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>

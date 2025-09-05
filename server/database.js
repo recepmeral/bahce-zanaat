@@ -48,6 +48,16 @@ db.serialize(() => {
     FOREIGN KEY (appointment_id) REFERENCES appointments (id)
   )`);
 
+  // Yorumlar tablosu
+  db.run(`CREATE TABLE IF NOT EXISTS reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    rating INTEGER NOT NULL CHECK(rating >= 1 AND rating <= 5),
+    comment TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+  )`);
+
   // Admin kullanıcı oluştur (ilk kurulumda)
   const adminPassword = bcrypt.hashSync('admin123', 10);
   db.run(`INSERT OR IGNORE INTO users (username, password, email, phone, full_name, is_admin) 

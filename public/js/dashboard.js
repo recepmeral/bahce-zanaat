@@ -1,4 +1,6 @@
-const API_URL = 'http://localhost:3000/api';
+const API_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:3000/api' 
+    : 'https://bahce-zanaat.onrender.com/api';
 let selectedImages = [];
 
 // Check authentication
@@ -51,6 +53,10 @@ function showPage(page) {
         document.getElementById('newAppointmentPage').classList.remove('d-none');
         document.querySelector('[data-page="new-appointment"]').classList.add('active');
         loadServices();
+    } else if (page === 'reviews') {
+        document.getElementById('reviewsPage').classList.remove('d-none');
+        document.querySelector('[data-page="reviews"]').classList.add('active');
+        loadMyReviews();
     }
 }
 
@@ -295,12 +301,149 @@ document.getElementById('appointmentForm')?.addEventListener('submit', async (e)
     }
 });
 
+// Star rating functionality
+function setupStarRating() {
+    const stars = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('reviewRating');
+    const ratingText = document.getElementById('ratingText');
+    
+    stars.forEach(star => {
+        star.addEventListener('click', () => {
+            const rating = parseInt(star.dataset.rating);
+            ratingInput.value = rating;
+            
+            // Update stars display
+            stars.forEach((s, index) => {
+                if (index < rating) {
+                    s.classList.remove('bi-star');
+                    s.classList.add('bi-star-fill');
+                } else {
+                    s.classList.add('bi-star');
+                    s.classList.remove('bi-star-fill');
+                }
+            });
+            
+            // Update text
+            const texts = ['', 'Kötü', 'İdare eder', 'İyi', 'Çok iyi', 'Mükemmel'];
+            ratingText.textContent = texts[rating];
+        });
+    });
+}
+
+// Load my reviews
+async function loadMyReviews() {
+    const token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch(`${API_URL}/reviews/my`, {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        const reviews = await response.json();
+        const container = document.getElementById('myReviewsList');
+        
+        if (reviews.length === 0) {
+            container.innerHTML = `
+                <p class="text-muted text-center">Henüz yorum yapmadınız.</p>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        reviews.forEach(review => {
+            const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+            const reviewElement = document.createElement('div');
+            reviewElement.className = 'review-item';
+            reviewElement.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <div class="review-stars">${stars}</div>
+                        <p class="mb-1">${review.comment}</p>
+                        <small class="review-date">${new Date(review.created_at).toLocaleDateString('tr-TR')}</small>
+                    </div>
+                    <button class="btn btn-sm btn-outline-danger" onclick="deleteReview(${review.id})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            `;
+            container.appendChild(reviewElement);
+        });
+    } catch (error) {
+        console.error('Yorumlar yüklenemedi:', error);
+    }
+}
+
+// Submit review
+document.getElementById('reviewForm')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const token = localStorage.getItem('token');
+    const rating = document.getElementById('reviewRating').value;
+    const comment = document.getElementById('reviewComment').value;
+    
+    if (!rating) {
+        showAlert('Lütfen yıldız değerlendirmesi yapın');
+        return;
+    }
+    
+    try {
+        const response = await fetch(`${API_URL}/reviews`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ rating, comment })
+        });
+        
+        if (response.ok) {
+            showAlert('Yorumunuz başarıyla gönderildi!', 'success');
+            document.getElementById('reviewForm').reset();
+            document.querySelectorAll('.star-btn').forEach(star => {
+                star.classList.remove('bi-star-fill');
+                star.classList.add('bi-star');
+            });
+            document.getElementById('ratingText').textContent = 'Değerlendirmenizi yapın';
+            loadMyReviews();
+        } else {
+            showAlert('Yorum gönderilemedi');
+        }
+    } catch (error) {
+        showAlert('Bağlantı hatası');
+    }
+});
+
+// Delete review
+async function deleteReview(reviewId) {
+    if (!confirm('Yorumu silmek istediğinize emin misiniz?')) return;
+    
+    const token = localStorage.getItem('token');
+    
+    try {
+        const response = await fetch(`${API_URL}/reviews/${reviewId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            showAlert('Yorum silindi', 'success');
+            loadMyReviews();
+        }
+    } catch (error) {
+        showAlert('Yorum silinemedi');
+    }
+}
+
 // Setup page navigation
 document.querySelectorAll('[data-page]').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const page = e.currentTarget.dataset.page;
-        showPage(page === 'new-appointment' ? 'new-appointment' : 'appointments');
+        showPage(page);
     });
 });
 
@@ -313,5 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkAuth()) {
         showPage('appointments');
         setupImageUpload(); // Resim yükleme kutularını hazırla
+        setupStarRating(); // Yıldız değerlendirme sistemini hazırla
     }
 });

@@ -20,6 +20,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/appointments', require('./routes/appointments'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/reviews', require('./routes/reviews'));
 
 // Ana sayfa
 app.get('/', (req, res) => {
@@ -33,5 +34,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Server http://localhost:${PORT} adresinde çal1_1yor`);
+  console.log(`Server http://localhost:${PORT} adresinde ï¿½al1_1yor`);
 });
