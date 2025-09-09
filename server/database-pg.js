@@ -5,14 +5,13 @@ const bcrypt = require('bcrypt');
 let poolConfig;
 
 if (process.env.NODE_ENV === 'production') {
-  // Force IPv4 in production by parsing and rebuilding the connection string
-  const dbUrl = new URL(process.env.DATABASE_URL);
+  // Force IPv4 in production - direct configuration
   poolConfig = {
     host: 'db.jtnherytpxnaitrodmfd.supabase.co', // IPv4 host
     port: 5432,
     database: 'postgres',
-    user: dbUrl.username,
-    password: dbUrl.password,
+    user: 'postgres',
+    password: 'AliUrfali3838',
     ssl: {
       rejectUnauthorized: false
     }
