@@ -2,7 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const db = require('./database');
+
+// Use PostgreSQL if DATABASE_URL exists, otherwise use SQLite
+const db = process.env.DATABASE_URL 
+  ? require('./database-pg') 
+  : require('./database');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -16,11 +20,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/appointments', require('./routes/appointments'));
-app.use('/api/admin', require('./routes/admin'));
-app.use('/api/reviews', require('./routes/reviews'));
+// Routes - Use PostgreSQL versions if DATABASE_URL exists
+if (process.env.DATABASE_URL) {
+  app.use('/api/auth', require('./routes/auth-pg'));
+  app.use('/api/appointments', require('./routes/appointments-pg'));
+  app.use('/api/reviews', require('./routes/reviews-pg'));
+  // Admin route will use the same DB connection
+  app.use('/api/admin', require('./routes/admin'));
+} else {
+  app.use('/api/auth', require('./routes/auth'));
+  app.use('/api/appointments', require('./routes/appointments'));
+  app.use('/api/reviews', require('./routes/reviews'));
+  app.use('/api/admin', require('./routes/admin'));
+}
 
 // Ana sayfa
 app.get('/', (req, res) => {

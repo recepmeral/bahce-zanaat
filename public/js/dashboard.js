@@ -158,9 +158,11 @@ async function loadAppointments() {
                             <div class="col-md-4 text-end">
                                 ${appointment.images.length > 0 ? `
                                     <div class="mb-2">
-                                        ${appointment.images.map(img => `
-                                            <img src="/uploads/${img}" class="image-preview" onclick="showImage('/uploads/${img}')" alt="Bahçe">
-                                        `).join('')}
+                                        ${appointment.images.map(img => {
+                                            // Check if it's a Cloudinary URL or local path
+                                            const imgUrl = img.startsWith('http') ? img : `/uploads/${img}`;
+                                            return `<img src="${imgUrl}" class="image-preview" onclick="showImage('${imgUrl}')" alt="Bahçe">`;
+                                        }).join('')}
                                     </div>
                                 ` : ''}
                                 <small class="text-muted">
