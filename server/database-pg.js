@@ -1,11 +1,6 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 
-// Override DATABASE_URL to force IPv4 in production
-if (process.env.NODE_ENV === 'production') {
-  process.env.DATABASE_URL = 'postgresql://postgres:AliUrfali3838@db.jtnherytpxnaitrodmfd.supabase.co:5432/postgres';
-}
-
 // PostgreSQL connection
 const poolConfig = {
   connectionString: process.env.DATABASE_URL,
