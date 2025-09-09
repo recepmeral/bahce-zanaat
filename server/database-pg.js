@@ -2,12 +2,20 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 
 // PostgreSQL connection
-const pool = new Pool({
+const poolConfig = {
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? {
     rejectUnauthorized: false
   } : false
-});
+};
+
+// Force IPv4 in production
+if (process.env.NODE_ENV === 'production') {
+  poolConfig.host = 'db.jtnherytpxnaitrodmfd.supabase.co';
+  poolConfig.connectionString = process.env.DATABASE_URL + '?sslmode=require';
+}
+
+const pool = new Pool(poolConfig);
 
 // Create tables
 async function initDatabase() {
