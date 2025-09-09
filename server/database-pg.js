@@ -1,27 +1,18 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 
-// PostgreSQL connection
-let poolConfig;
-
+// Override DATABASE_URL to force IPv4 in production
 if (process.env.NODE_ENV === 'production') {
-  // Force IPv4 in production - direct configuration
-  poolConfig = {
-    host: 'db.jtnherytpxnaitrodmfd.supabase.co', // IPv4 host
-    port: 5432,
-    database: 'postgres',
-    user: 'postgres',
-    password: 'AliUrfali3838',
-    ssl: {
-      rejectUnauthorized: false
-    }
-  };
-} else {
-  poolConfig = {
-    connectionString: process.env.DATABASE_URL,
-    ssl: false
-  };
+  process.env.DATABASE_URL = 'postgresql://postgres:AliUrfali3838@db.jtnherytpxnaitrodmfd.supabase.co:5432/postgres';
 }
+
+// PostgreSQL connection
+const poolConfig = {
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? {
+    rejectUnauthorized: false
+  } : false
+};
 
 const pool = new Pool(poolConfig);
 
