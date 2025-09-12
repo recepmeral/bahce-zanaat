@@ -38,14 +38,15 @@ router.get('/services', (req, res) => {
   res.json(services);
 });
 
-// Dolu günleri getir (onaylanmış randevular)
+// Dolu günleri ve saatleri getir (onaylanmış ve bekleyen randevular)
 router.get('/busy-dates', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT appointment_date, appointment_time 
        FROM appointments 
-       WHERE status IN ('confirmed', 'completed')
-       AND appointment_date >= CURRENT_DATE`
+       WHERE status IN ('confirmed', 'pending')
+       AND appointment_date >= CURRENT_DATE
+       ORDER BY appointment_date, appointment_time`
     );
     
     res.json(result.rows);
@@ -64,6 +65,22 @@ router.post('/', authenticateToken, upload.array('images', 5), async (req, res) 
   
   try {
     await client.query('BEGIN');
+    
+    // Aynı tarih ve saatte onaylanmış randevu var mı kontrol et
+    const conflictCheck = await client.query(
+      `SELECT COUNT(*) as count FROM appointments 
+       WHERE appointment_date = $1 
+       AND appointment_time = $2 
+       AND status IN ('confirmed', 'pending')`,
+      [appointment_date, appointment_time]
+    );
+    
+    if (parseInt(conflictCheck.rows[0].count) > 0) {
+      await client.query('ROLLBACK');
+      return res.status(409).json({ 
+        error: 'Bu tarih ve saatte başka bir randevu bulunmaktadır. Lütfen farklı bir saat seçin.' 
+      });
+    }
     
     // Randevu oluştur
     const appointmentResult = await client.query(

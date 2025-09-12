@@ -69,31 +69,38 @@ async function loadBusyDates() {
         
         const busyDates = await response.json();
         
-        // Tarihleri formatlayıp set'e ekle
-        const dateSet = new Set();
+        // Tarih ve saat kombinasyonlarını sakla
+        const busySlots = {};
         busyDates.forEach(item => {
             const date = new Date(item.appointment_date);
             const dateStr = date.toISOString().split('T')[0];
-            dateSet.add(dateStr);
+            if (!busySlots[dateStr]) {
+                busySlots[dateStr] = [];
+            }
+            busySlots[dateStr].push(item.appointment_time);
         });
         
         // Takvime min date ekle (bugün)
         const dateInput = document.getElementById('appointmentDate');
+        const timeInput = document.getElementById('appointmentTime');
         const today = new Date().toISOString().split('T')[0];
         dateInput.min = today;
         
-        // Dolu günlerde uyarı göster
+        // Tarih değiştiğinde saat kontrolü yap
         dateInput.addEventListener('change', function() {
             const selected = this.value;
             let warningDiv = document.getElementById('dateWarning');
             
-            if (dateSet.has(selected)) {
+            if (busySlots[selected]) {
+                const busyTimes = busySlots[selected];
                 if (!warningDiv) {
                     const warning = document.createElement('div');
                     warning.id = 'dateWarning';
                     warning.className = 'alert alert-warning mt-2';
-                    warning.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Bu tarihte başka randevular var. Lütfen saat seçiminde dikkatli olun.';
+                    warning.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Bu tarihte dolu saatler: <strong>${busyTimes.join(', ')}</strong>. Lütfen farklı bir saat seçin.`;
                     this.parentElement.appendChild(warning);
+                } else {
+                    warningDiv.innerHTML = `<i class="bi bi-exclamation-triangle"></i> Bu tarihte dolu saatler: <strong>${busyTimes.join(', ')}</strong>. Lütfen farklı bir saat seçin.`;
                 }
             } else {
                 if (warningDiv) {
@@ -102,10 +109,31 @@ async function loadBusyDates() {
             }
         });
         
-        return dateSet;
+        // Saat değiştiğinde kontrol et
+        timeInput.addEventListener('change', function() {
+            const selectedDate = dateInput.value;
+            const selectedTime = this.value;
+            let timeWarning = document.getElementById('timeWarning');
+            
+            if (busySlots[selectedDate] && busySlots[selectedDate].includes(selectedTime)) {
+                if (!timeWarning) {
+                    const warning = document.createElement('div');
+                    warning.id = 'timeWarning';
+                    warning.className = 'alert alert-danger mt-2';
+                    warning.innerHTML = '<i class="bi bi-x-circle"></i> <strong>Bu saat dolu!</strong> Lütfen farklı bir saat seçin.';
+                    this.parentElement.appendChild(warning);
+                }
+            } else {
+                if (timeWarning) {
+                    timeWarning.remove();
+                }
+            }
+        });
+        
+        return busySlots;
     } catch (error) {
         console.error('Dolu günler yüklenemedi:', error);
-        return new Set();
+        return {};
     }
 }
 
