@@ -381,28 +381,54 @@ body {
 /* Admin table container fix */
 .table-responsive {
     overflow: visible !important;
+    position: relative;
 }
 
 /* Ensure dropdowns in tables work properly */
-.table td {
+.table {
     position: relative;
+    z-index: 1;
+}
+
+.table td {
+    position: static;
     overflow: visible !important;
 }
 
 .table td .dropdown {
-    position: relative;
+    position: static;
     display: inline-block;
 }
 
 .table td .dropdown-menu {
     position: absolute;
-    top: calc(100% + 2px) !important;
-    left: 0;
+    top: auto !important;
+    left: auto !important;
     right: auto;
     bottom: auto;
     transform: none;
-    margin-top: 0;
+    margin-top: 2px;
     margin-bottom: 0;
+    z-index: 1060;
+}
+
+/* Fix for dropdown visibility in admin panel */
+#appointmentsPage .dropdown {
+    position: relative !important;
+}
+
+#appointmentsPage .dropdown-menu {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    transform: none !important;
+    margin-top: 2px !important;
+    z-index: 9999 !important;
+    display: none;
+}
+
+#appointmentsPage .dropdown-menu.show {
+    display: block !important;
 }
 
 @media (max-width: 768px) {
