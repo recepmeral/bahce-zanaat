@@ -25,8 +25,7 @@ if (process.env.DATABASE_URL) {
   app.use('/api/auth', require('./routes/auth-pg'));
   app.use('/api/appointments', require('./routes/appointments-pg'));
   app.use('/api/reviews', require('./routes/reviews-pg'));
-  // Admin route will use the same DB connection
-  app.use('/api/admin', require('./routes/admin'));
+  app.use('/api/admin', require('./routes/admin-pg'));
 } else {
   app.use('/api/auth', require('./routes/auth'));
   app.use('/api/appointments', require('./routes/appointments'));
