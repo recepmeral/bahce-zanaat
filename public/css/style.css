@@ -616,13 +616,14 @@ body {
 /* Garden Gallery Styles */
 .garden-gallery {
     position: relative;
+    width: 100%;
 }
 
 .thumbnail-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-    max-width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px !important;
+    width: 100%;
 }
 
 .gallery-thumbnail {
@@ -634,6 +635,7 @@ body {
     transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
+    display: block;
 }
 
 .gallery-thumbnail img {
