@@ -140,10 +140,10 @@ async function loadAppointments() {
                     </span>
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-primary" onclick="viewAppointment(${appointment.id})">
+                    <button class="btn btn-sm btn-primary me-2" onclick="viewAppointment(${appointment.id})">
                         <i class="bi bi-eye"></i>
                     </button>
-                    <div class="dropdown">
+                    <div class="dropdown d-inline-block">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton${appointment.id}" data-bs-toggle="dropdown" aria-expanded="false">
                             Durum Değiştir
                         </button>
