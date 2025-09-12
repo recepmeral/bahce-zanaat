@@ -143,22 +143,22 @@ async function loadAppointments() {
                     <button class="btn btn-sm btn-primary" onclick="viewAppointment(${appointment.id})">
                         <i class="bi bi-eye"></i>
                     </button>
-                    <div class="btn-group dropup">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
-                            Durum
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton${appointment.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                            Durum Değiştir
                         </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'pending')">
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${appointment.id}">
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus(${appointment.id}, 'pending')">
                                 <i class="bi bi-clock text-warning"></i> Beklemede
                             </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'confirmed')">
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus(${appointment.id}, 'confirmed')">
                                 <i class="bi bi-check-circle text-success"></i> Onayla
                             </a></li>
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'completed')">
-                                <i class="bi bi-check-all text-info"></i> Tamamla
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus(${appointment.id}, 'completed')">
+                                <i class="bi bi-check-all text-info"></i> Tamamlandı
                             </a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'cancelled')">
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="updateStatus(${appointment.id}, 'cancelled')">
                                 <i class="bi bi-x-circle text-danger"></i> İptal Et
                             </a></li>
                         </ul>

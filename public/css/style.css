@@ -313,39 +313,64 @@ body {
 }
 
 /* Admin Panel Dropdown Fix */
-.dropdown-menu {
-    display: none;
+.dropdown .dropdown-menu {
     position: absolute;
+    top: 100%;
+    left: 0;
     z-index: 1050;
-    min-width: 160px;
+    display: none;
+    min-width: 10rem;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 0.875rem;
+    color: #212529;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: 0.25rem;
 }
 
-.dropdown-menu.show {
+.dropdown .dropdown-menu.show {
     display: block !important;
 }
 
-/* Ensure dropdown items are visible */
+/* Ensure dropdown items are always visible */
+.dropdown-menu li {
+    display: block !important;
+}
+
 .dropdown-menu .dropdown-item {
-    display: block;
+    display: block !important;
     width: 100%;
-    padding: 0.25rem 1rem;
+    padding: 0.5rem 1rem;
     clear: both;
     font-weight: 400;
     color: #212529;
     text-align: inherit;
+    text-decoration: none;
     white-space: nowrap;
     background-color: transparent;
     border: 0;
+    cursor: pointer;
 }
 
-.dropdown-menu .dropdown-item:hover {
-    background-color: #f8f9fa;
-    color: #16181b;
+.dropdown-menu .dropdown-item:hover,
+.dropdown-menu .dropdown-item:focus {
+    color: #1e2125;
+    background-color: #e9ecef;
 }
 
-/* Fix for status dropdown in admin table */
-.btn-group .dropdown-menu {
-    margin-top: 0.125rem;
+.dropdown-menu .dropdown-item i {
+    margin-right: 0.5rem;
+}
+
+.dropdown-divider {
+    height: 0;
+    margin: 0.5rem 0;
+    overflow: hidden;
+    border-top: 1px solid #e9ecef;
 }
 
 @media (max-width: 768px) {
