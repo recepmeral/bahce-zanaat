@@ -38,6 +38,23 @@ router.get('/services', (req, res) => {
   res.json(services);
 });
 
+// Dolu günleri getir (onaylanmış randevular)
+router.get('/busy-dates', async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT appointment_date, appointment_time 
+       FROM appointments 
+       WHERE status IN ('confirmed', 'completed')
+       AND appointment_date >= CURRENT_DATE`
+    );
+    
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Get busy dates error:', error);
+    res.status(500).json({ error: 'Dolu günler alınamadı' });
+  }
+});
+
 // Yeni randevu oluştur - Cloudinary ile
 router.post('/', authenticateToken, upload.array('images', 5), async (req, res) => {
   const { appointment_date, appointment_time, notes, selectedServices } = req.body;

@@ -53,10 +53,59 @@ function showPage(page) {
         document.getElementById('newAppointmentPage').classList.remove('d-none');
         document.querySelector('[data-page="new-appointment"]').classList.add('active');
         loadServices();
+        loadBusyDates();
     } else if (page === 'reviews') {
         document.getElementById('reviewsPage').classList.remove('d-none');
         document.querySelector('[data-page="reviews"]').classList.add('active');
         loadMyReviews();
+    }
+}
+
+// Load busy dates for calendar
+async function loadBusyDates() {
+    try {
+        const response = await fetch(`${API_URL}/appointments/busy-dates`);
+        if (!response.ok) throw new Error('Dolu günler yüklenemedi');
+        
+        const busyDates = await response.json();
+        
+        // Tarihleri formatlayıp set'e ekle
+        const dateSet = new Set();
+        busyDates.forEach(item => {
+            const date = new Date(item.appointment_date);
+            const dateStr = date.toISOString().split('T')[0];
+            dateSet.add(dateStr);
+        });
+        
+        // Takvime min date ekle (bugün)
+        const dateInput = document.getElementById('appointmentDate');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+        
+        // Dolu günlerde uyarı göster
+        dateInput.addEventListener('change', function() {
+            const selected = this.value;
+            let warningDiv = document.getElementById('dateWarning');
+            
+            if (dateSet.has(selected)) {
+                if (!warningDiv) {
+                    const warning = document.createElement('div');
+                    warning.id = 'dateWarning';
+                    warning.className = 'alert alert-warning mt-2';
+                    warning.innerHTML = '<i class="bi bi-exclamation-triangle"></i> Bu tarihte başka randevular var. Lütfen saat seçiminde dikkatli olun.';
+                    this.parentElement.appendChild(warning);
+                }
+            } else {
+                if (warningDiv) {
+                    warningDiv.remove();
+                }
+            }
+        });
+        
+        return dateSet;
+    } catch (error) {
+        console.error('Dolu günler yüklenemedi:', error);
+        return new Set();
     }
 }
 
