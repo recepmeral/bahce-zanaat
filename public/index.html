@@ -198,21 +198,24 @@
                 </div>
                 <div class="col-md-7">
                     <div class="garden-gallery">
-                        <div class="main-image mb-3">
-                            <img src="/images/beautiful-garden.jpg" alt="Profesyonel Peyzaj ve Bahçe Düzenlemesi" class="rounded shadow" style="width: 100%; height: 350px; object-fit: cover; display: block;">
-                        </div>
                         <div class="thumbnail-container d-flex gap-2 flex-wrap">
-                            <div class="gallery-thumbnail" onclick="showImage('/images/beautiful-garden.jpg')">
-                                <img src="/images/beautiful-garden.jpg" alt="Lale Bahçesi">
+                            <div class="gallery-thumbnail" onclick="showImage('/images/1_1-Photo-scaled.jpg')">
+                                <img src="/images/1_1-Photo-scaled.jpg" alt="Profesyonel Bahçe Tasarımı">
                             </div>
-                            <div class="gallery-thumbnail" onclick="showImage('/images/gallery-1.jpg')">
-                                <img src="/images/gallery-1.jpg" alt="Modern Bahçe Tasarımı">
+                            <div class="gallery-thumbnail" onclick="showImage('/images/2_15-Foto-scaled.jpg')">
+                                <img src="/images/2_15-Foto-scaled.jpg" alt="Modern Peyzaj">
                             </div>
-                            <div class="gallery-thumbnail" onclick="showImage('/images/gallery-2.webp')">
-                                <img src="/images/gallery-2.webp" alt="Lavanta Yolu">
+                            <div class="gallery-thumbnail" onclick="showImage('/images/3_18-Foto-scaled.jpg')">
+                                <img src="/images/3_18-Foto-scaled.jpg" alt="Bahçe Düzenlemesi">
                             </div>
-                            <div class="gallery-thumbnail" onclick="showImage('/images/gallery-3.jpg')">
-                                <img src="/images/gallery-3.jpg" alt="Rengarenk Laleler">
+                            <div class="gallery-thumbnail" onclick="showImage('/images/bitkisel-peyzaj-tasarimi-1.jpg')">
+                                <img src="/images/bitkisel-peyzaj-tasarimi-1.jpg" alt="Bitkisel Peyzaj">
+                            </div>
+                            <div class="gallery-thumbnail" onclick="showImage('/images/PVPQYLPNS_resim_27_2_2024_12_b.webp')">
+                                <img src="/images/PVPQYLPNS_resim_27_2_2024_12_b.webp" alt="Lavanta Bahçesi">
+                            </div>
+                            <div class="gallery-thumbnail" onclick="showImage('/images/Screenshot 2025-09-13 at 01.27.21.png')">
+                                <img src="/images/Screenshot 2025-09-13 at 01.27.21.png" alt="Rengarenk Laleler">
                             </div>
                         </div>
                     </div>
@@ -406,11 +409,6 @@
             const overlay = document.getElementById('imageOverlay');
             overlay.classList.remove('active');
         }
-
-        // Ana resmi de tıklanabilir yap
-        document.querySelector('.main-image img').onclick = function() {
-            showImage(this.src);
-        };
 
         // ESC tuşu ile kapatma
         document.addEventListener('keydown', function(e) {
