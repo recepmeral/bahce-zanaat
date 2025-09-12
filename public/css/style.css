@@ -312,6 +312,42 @@ body {
     border-radius: 20px;
 }
 
+/* Admin Panel Dropdown Fix */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    z-index: 1050;
+    min-width: 160px;
+}
+
+.dropdown-menu.show {
+    display: block !important;
+}
+
+/* Ensure dropdown items are visible */
+.dropdown-menu .dropdown-item {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1rem;
+    clear: both;
+    font-weight: 400;
+    color: #212529;
+    text-align: inherit;
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+}
+
+.dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #16181b;
+}
+
+/* Fix for status dropdown in admin table */
+.btn-group .dropdown-menu {
+    margin-top: 0.125rem;
+}
+
 @media (max-width: 768px) {
     body {
         padding-top: 56px;

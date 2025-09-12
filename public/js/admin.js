@@ -143,15 +143,24 @@ async function loadAppointments() {
                     <button class="btn btn-sm btn-primary" onclick="viewAppointment(${appointment.id})">
                         <i class="bi bi-eye"></i>
                     </button>
-                    <div class="btn-group">
-                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown">
+                    <div class="btn-group dropup">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="true" aria-expanded="false">
                             Durum
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#" onclick="updateStatus(${appointment.id}, 'pending')">Beklemede</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="updateStatus(${appointment.id}, 'confirmed')">Onayla</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="updateStatus(${appointment.id}, 'completed')">Tamamla</a></li>
-                            <li><a class="dropdown-item" href="#" onclick="updateStatus(${appointment.id}, 'cancelled')">İptal</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'pending')">
+                                <i class="bi bi-clock text-warning"></i> Beklemede
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'confirmed')">
+                                <i class="bi bi-check-circle text-success"></i> Onayla
+                            </a></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'completed')">
+                                <i class="bi bi-check-all text-info"></i> Tamamla
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="event.preventDefault(); updateStatus(${appointment.id}, 'cancelled')">
+                                <i class="bi bi-x-circle text-danger"></i> İptal Et
+                            </a></li>
                         </ul>
                     </div>
                 </td>
