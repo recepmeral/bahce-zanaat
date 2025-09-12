@@ -616,24 +616,23 @@ body {
 /* Garden Gallery Styles */
 .garden-gallery {
     position: relative;
-    padding: 20px 0;
 }
 
 .thumbnail-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    padding: 10px;
+    gap: 10px;
+    max-width: 100%;
 }
 
 .gallery-thumbnail {
     width: 100%;
-    aspect-ratio: 1;
-    border-radius: 12px;
+    height: 120px;
+    border-radius: 8px;
     overflow: hidden;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: relative;
 }
 
@@ -645,13 +644,23 @@ body {
 }
 
 .gallery-thumbnail:hover {
-    transform: scale(1.08);
-    box-shadow: 0 8px 16px rgba(25, 135, 84, 0.3);
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(25, 135, 84, 0.2);
     z-index: 10;
 }
 
 .gallery-thumbnail:hover img {
-    transform: scale(1.15);
+    transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+    .gallery-thumbnail {
+        height: 100px;
+    }
+    
+    .thumbnail-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 /* Büyütülmüş resim için overlay */
