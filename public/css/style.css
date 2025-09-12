@@ -685,9 +685,16 @@ body {
 }
 
 .image-overlay img {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95vw;
+    max-height: 95vh;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    object-position: center;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    display: block;
+    margin: auto;
+    /* Küçük resimler için minimum boyut */
+    min-width: 50vw;
 }
