@@ -1,11 +1,4 @@
 require('dotenv').config();
-
-// Override DATABASE_URL to force IPv4 in production - MUST be before any pg module import
-if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
-  process.env.DATABASE_URL = 'postgresql://postgres:AliUrfali3838@db.jtnherytpxnaitrodmfd.supabase.co:5432/postgres';
-  console.log('DATABASE_URL overridden to use IPv4');
-}
-
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
