@@ -33,6 +33,15 @@ if (process.env.DATABASE_URL) {
   app.use('/api/admin', require('./routes/admin'));
 }
 
+// Health check endpoint (keep-alive için)
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'ok', 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
+});
+
 // Ana sayfa
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

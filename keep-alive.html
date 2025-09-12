@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bahçe Zanaat - Keep Alive</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            margin-bottom: 1rem;
+        }
+        .status {
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+        .log {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            text-align: left;
+        }
+        .log-entry {
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        .success {
+            color: #4caf50;
+        }
+        .error {
+            color: #f44336;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌿 Bahçe Zanaat Keep-Alive</h1>
+        <p>Bu sayfa sitenizi aktif tutar ve uyku moduna geçmesini önler.</p>
+        
+        <div class="status">
+            <p>Durum: <span id="status">Başlatılıyor...</span></p>
+            <p>Son Kontrol: <span id="lastCheck">-</span></p>
+            <p>Başarılı: <span id="successCount">0</span> | Başarısız: <span id="errorCount">0</span></p>
+        </div>
+
+        <div>
+            <button id="startBtn" onclick="startKeepAlive()">Başlat</button>
+            <button id="stopBtn" onclick="stopKeepAlive()" disabled>Durdur</button>
+            <button onclick="clearLog()">Logu Temizle</button>
+        </div>
+
+        <div class="log" id="log"></div>
+    </div>
+
+    <script>
+        let intervalId = null;
+        let successCount = 0;
+        let errorCount = 0;
+        const SITE_URL = 'https://bahce-zanaat.onrender.com';
+        const CHECK_INTERVAL = 5 * 60 * 1000; // 5 dakika
+
+        function addLog(message, type = 'info') {
+            const log = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            const timestamp = new Date().toLocaleTimeString('tr-TR');
+            entry.textContent = `[${timestamp}] ${message}`;
+            log.insertBefore(entry, log.firstChild);
+            
+            // Maksimum 50 log tutma
+            while (log.children.length > 50) {
+                log.removeChild(log.lastChild);
+            }
+        }
+
+        async function checkHealth() {
+            try {
+                addLog('Sağlık kontrolü yapılıyor...', 'info');
+                const response = await fetch(`${SITE_URL}/api/health`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    successCount++;
+                    document.getElementById('successCount').textContent = successCount;
+                    document.getElementById('lastCheck').textContent = new Date().toLocaleTimeString('tr-TR');
+                    document.getElementById('status').textContent = '✅ Aktif';
+                    document.getElementById('status').className = 'success';
+                    addLog(`Başarılı! Uptime: ${Math.floor(data.uptime / 60)} dakika`, 'success');
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                errorCount++;
+                document.getElementById('errorCount').textContent = errorCount;
+                document.getElementById('status').textContent = '❌ Hata';
+                document.getElementById('status').className = 'error';
+                addLog(`Hata: ${error.message}`, 'error');
+            }
+        }
+
+        function startKeepAlive() {
+            if (intervalId) return;
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            
+            addLog('Keep-alive başlatıldı', 'success');
+            document.getElementById('status').textContent = '🔄 Çalışıyor';
+            
+            // İlk kontrolü hemen yap
+            checkHealth();
+            
+            // Belirli aralıklarla kontrol et
+            intervalId = setInterval(checkHealth, CHECK_INTERVAL);
+        }
+
+        function stopKeepAlive() {
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+            
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('status').textContent = '⏸️ Durduruldu';
+            addLog('Keep-alive durduruldu', 'info');
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            addLog('Log temizlendi', 'info');
+        }
+
+        // Sayfa yüklendiğinde otomatik başlat
+        window.onload = () => {
+            addLog('Sayfa yüklendi, keep-alive hazır', 'info');
+            // Otomatik başlatmak isterseniz:
+            // startKeepAlive();
+        };
+
+        // Sayfa kapatılırken temizle
+        window.onbeforeunload = () => {
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+        };
+    </script>
+</body>
+</html>
